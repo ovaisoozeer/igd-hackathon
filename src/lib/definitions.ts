@@ -57,3 +57,44 @@ export type SessionPayload = {
   role: Role;
   expiresAt: string;
 };
+
+export const CreateProjectSchema = z.object({
+  brief: z
+    .string()
+    .trim()
+    .min(10, { error: "Brief must be at least 10 characters." })
+    .max(2000, { error: "Brief must be 2000 characters or less." }),
+  industry: z
+    .string()
+    .trim()
+    .min(1, { error: "Choose an industry." }),
+});
+
+export type CreateProjectState =
+  | {
+      errors?: {
+        brief?: string[];
+        industry?: string[];
+      };
+      message?: string;
+    }
+  | undefined;
+
+export const CreateSubmissionSchema = z.object({
+  projectId: z.string().trim().min(1, { error: "Choose a project." }),
+  content: z
+    .string()
+    .trim()
+    .min(20, { error: "Submission must be at least 20 characters." })
+    .max(4000, { error: "Submission must be 4000 characters or less." }),
+});
+
+export type CreateSubmissionState =
+  | {
+      errors?: {
+        projectId?: string[];
+        content?: string[];
+      };
+      message?: string;
+    }
+  | undefined;

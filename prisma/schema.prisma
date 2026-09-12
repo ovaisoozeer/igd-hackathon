@@ -13,13 +13,39 @@ enum Role {
 }
 
 model User {
-  id                        String   @id @default(cuid())
+  id                        String        @id @default(cuid())
   name                      String
-  email                     String   @unique
+  email                     String        @unique
   password                  String
   role                      Role
   charityRegistrationNumber String?
   projectIndustry           String?
-  createdAt                 DateTime @default(now())
-  updatedAt                 DateTime @updatedAt
+  createdAt                 DateTime      @default(now())
+  updatedAt                 DateTime      @updatedAt
+  projects                  Project[]
+  submissions               Submission[]
+}
+
+model Project {
+  id          String        @id @default(cuid())
+  brief       String
+  industry    String
+  providerId  String
+  provider    User          @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  submissions Submission[]
+}
+
+model Submission {
+  id          String   @id @default(cuid())
+  content     String
+  candidateId String
+  projectId   String
+  candidate   User     @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([candidateId, projectId])
 }

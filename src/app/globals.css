@@ -129,6 +129,22 @@ footer p:first-child {
   box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.18);
 }
 
+select.field {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+    linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) calc(50% - 3px),
+    calc(100% - 12px) calc(50% - 3px);
+  background-size: 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 2.25rem;
+}
+
+textarea.field {
+  line-height: 1.5;
+}
+
 .btn-primary {
   display: inline-flex;
   align-items: center;

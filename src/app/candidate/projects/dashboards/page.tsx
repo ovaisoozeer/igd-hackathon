@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { IndustryPicker } from "@/app/ui/industry-picker";
 import { SiteHeader } from "@/app/ui/site-header";
+import { prisma } from "@/lib/prisma";
 import { dashboardPath } from "@/lib/routes";
 import { getCurrentUser } from "@/lib/session";
 
@@ -17,6 +18,20 @@ export default async function CandidateProjectsDashboardsPage() {
   if (user.role !== "CANDIDATE") {
     redirect(dashboardPath(user.role));
   }
+
+  const projects = user.projectIndustry
+    ? await prisma.project.findMany({
+        where: { industry: user.projectIndustry },
+        include: {
+          provider: { select: { name: true } },
+          submissions: {
+            where: { candidateId: user.id },
+            select: { id: true },
+          },
+        },
+        orderBy: { createdAt: "desc" },
+      })
+    : [];
 
   return (
     <div className="flex min-h-full flex-col bg-[var(--paper)]">
@@ -39,6 +54,57 @@ export default async function CandidateProjectsDashboardsPage() {
           )}
           <IndustryPicker selected={user.projectIndustry} />
         </div>
+
+        {user.projectIndustry && (
+          <section className="mt-12">
+            <h2 className="font-serif text-3xl tracking-tight">
+              {user.projectIndustry} projects
+            </h2>
+            {projects.length === 0 ? (
+              <p className="mt-4 text-[var(--muted)]">
+                No projects in this industry yet. Choose another industry, or
+                check back later.
+              </p>
+            ) : (
+              <ul className="mt-6 grid gap-4">
+                {projects.map((project) => {
+                  const hasSubmitted = project.submissions.length > 0;
+
+                  return (
+                    <li
+                      key={project.id}
+                      className="rounded-3xl border border-[var(--line)] bg-white p-6"
+                    >
+                      <p className="text-sm text-[var(--muted)]">
+                        From {project.provider.name}
+                      </p>
+                      <p className="mt-3 whitespace-pre-wrap leading-7 text-[var(--ink)]">
+                        {project.brief}
+                      </p>
+                      <div className="mt-5">
+                        {hasSubmitted ? (
+                          <Link
+                            href={`/candidate/projects/${project.id}`}
+                            className="btn-secondary"
+                          >
+                            View submission
+                          </Link>
+                        ) : (
+                          <Link
+                            href={`/candidate/projects/${project.id}`}
+                            className="btn-primary"
+                          >
+                            Select project
+                          </Link>
+                        )}
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </section>
+        )}
       </main>
     </div>
   );
