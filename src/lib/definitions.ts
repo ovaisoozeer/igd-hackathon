@@ -16,7 +16,12 @@ export const SignupFormSchema = z.object({
     .regex(/[a-zA-Z]/, { error: "Contain at least one letter." })
     .regex(/[0-9]/, { error: "Contain at least one number." })
     .trim(),
-  role: RoleSchema,
+    role: RoleSchema,
+  charityRegistrationNumber: z
+    .string()
+    .trim()
+    .max(32, { error: "Registration number is too long." })
+    .optional(),
 });
 
 export const LoginFormSchema = z.object({
@@ -31,6 +36,7 @@ export type SignupFormState =
         email?: string[];
         password?: string[];
         role?: string[];
+        charityRegistrationNumber?: string[];
       };
       message?: string;
     }

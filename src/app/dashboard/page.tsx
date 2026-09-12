@@ -1,6 +1,7 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { SiteHeader } from "@/app/ui/site-header";
-import { getCurrentUser } from "@/lib/session";
+import { getCurrentUser, isCharityProvider } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
 
@@ -51,13 +52,14 @@ export default async function DashboardPage() {
   }
 
   const content = roleCopy[user.role];
+  const isCharity = isCharityProvider(user);
 
   return (
     <div className="flex min-h-full flex-col bg-[var(--paper)]">
       <SiteHeader user={user} />
       <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-12">
         <p className="text-sm uppercase tracking-[0.2em] text-[var(--muted)]">
-          {content.label} dashboard
+          {isCharity ? "Charity" : content.label} dashboard
         </p>
         <h1 className="mt-3 font-serif text-4xl tracking-tight sm:text-5xl">
           {content.headline}
@@ -67,6 +69,33 @@ export default async function DashboardPage() {
           session, so the first HTML response already knows you are a{" "}
           {content.label.toLowerCase()}.
         </p>
+
+        {user.role === "CANDIDATE" && (
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href="/dashboard/projects" className="btn-primary">
+              Projects
+            </Link>
+            <Link href="/dashboard/opportunities" className="btn-secondary">
+              Opportunities
+            </Link>
+          </div>
+        )}
+
+        {user.role === "PROVIDER" && (
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href="/dashboard/projects" className="btn-primary">
+              Projects
+            </Link>
+            <Link href="/dashboard/applications" className="btn-secondary">
+              Applications
+            </Link>
+            {isCharity && (
+              <Link href="/dashboard/my-projects" className="btn-secondary">
+                My Projects
+              </Link>
+            )}
+          </div>
+        )}
 
         <section className="mt-10 grid gap-4 md:grid-cols-3">
           {content.cards.map((card) => (

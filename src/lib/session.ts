@@ -47,6 +47,18 @@ export async function getCurrentUser() {
       name: true,
       email: true,
       role: true,
+      charityRegistrationNumber: true,
     },
   });
+}
+
+export function isCharityProvider(
+  user: {
+    role: Role;
+    charityRegistrationNumber?: string | null;
+  } | null,
+) {
+  return Boolean(
+    user?.role === "PROVIDER" && user.charityRegistrationNumber?.trim(),
+  );
 }

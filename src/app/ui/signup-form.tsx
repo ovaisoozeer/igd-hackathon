@@ -1,10 +1,12 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { signup } from "@/app/actions/auth";
+import type { Role } from "@/lib/definitions";
 
 export function SignupForm() {
   const [state, action, pending] = useActionState(signup, undefined);
+  const [role, setRole] = useState<Role>("CANDIDATE");
 
   return (
     <form action={action} className="space-y-6">
@@ -19,7 +21,8 @@ export function SignupForm() {
               name="role"
               value="CANDIDATE"
               className="peer sr-only"
-              defaultChecked
+              checked={role === "CANDIDATE"}
+              onChange={() => setRole("CANDIDATE")}
             />
             <span className="role-card-surface">
               <span className="font-serif text-xl">Candidate</span>
@@ -34,6 +37,8 @@ export function SignupForm() {
               name="role"
               value="PROVIDER"
               className="peer sr-only"
+              checked={role === "PROVIDER"}
+              onChange={() => setRole("PROVIDER")}
             />
             <span className="role-card-surface">
               <span className="font-serif text-xl">Provider</span>
@@ -104,6 +109,31 @@ export function SignupForm() {
           </div>
         )}
       </div>
+
+      {role === "PROVIDER" && (
+        <div className="space-y-2">
+          <label htmlFor="charityRegistrationNumber" className="text-sm font-medium">
+            Charity registration number
+          </label>
+          <input
+            id="charityRegistrationNumber"
+            name="charityRegistrationNumber"
+            type="text"
+            autoComplete="off"
+            placeholder="Optional"
+            className="field"
+          />
+          <p className="text-sm text-[var(--muted)]">
+            Add this if you are registering as a charity. It unlocks My Projects
+            on your dashboard.
+          </p>
+          {state?.errors?.charityRegistrationNumber && (
+            <p className="text-sm text-[var(--accent)]">
+              {state.errors.charityRegistrationNumber[0]}
+            </p>
+          )}
+        </div>
+      )}
 
       {state?.message && (
         <p className="text-sm text-[var(--accent)]">{state.message}</p>

@@ -13,11 +13,12 @@ enum Role {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  password  String
-  role      Role
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                        String   @id @default(cuid())
+  name                      String
+  email                     String   @unique
+  password                  String
+  role                      Role
+  charityRegistrationNumber String?
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
 }

@@ -20,6 +20,7 @@ export async function signup(
     email: formData.get("email"),
     password: formData.get("password"),
     role: formData.get("role"),
+    charityRegistrationNumber: formData.get("charityRegistrationNumber") ?? "",
   });
 
   if (!validatedFields.success) {
@@ -28,7 +29,8 @@ export async function signup(
     };
   }
 
-  const { name, email, password, role } = validatedFields.data;
+  const { name, email, password, role, charityRegistrationNumber } =
+    validatedFields.data;
   const existingUser = await prisma.user.findUnique({ where: { email } });
 
   if (existingUser) {
@@ -44,6 +46,10 @@ export async function signup(
       email,
       password: hashedPassword,
       role,
+      charityRegistrationNumber:
+        role === "PROVIDER" && charityRegistrationNumber
+          ? charityRegistrationNumber
+          : null,
     },
   });
 
