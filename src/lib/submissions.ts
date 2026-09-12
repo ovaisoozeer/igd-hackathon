@@ -56,3 +56,40 @@ export async function getTopRatedSubmissions(projectId: string, limit = 5) {
     take: limit,
   });
 }
+
+export async function getProjectSubmission(
+  projectId: string,
+  submissionId: string,
+) {
+  return prisma.submission.findFirst({
+    where: {
+      id: submissionId,
+      projectId,
+    },
+    include: {
+      candidate: { select: { name: true } },
+      project: {
+        include: {
+          provider: { select: { name: true } },
+        },
+      },
+    },
+  });
+}
+
+export async function getShortlistedOpportunities(candidateId: string) {
+  return prisma.submission.findMany({
+    where: {
+      candidateId,
+      shortlisted: true,
+    },
+    include: {
+      project: {
+        include: {
+          provider: { select: { name: true } },
+        },
+      },
+    },
+    orderBy: { updatedAt: "desc" },
+  });
+}

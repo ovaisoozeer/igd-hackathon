@@ -13,7 +13,7 @@ const cards = [
   },
   {
     title: "Opportunities",
-    body: "This is where open roles from providers will appear in a later iteration.",
+    body: "See projects you have been shortlisted for, along with the provider.",
   },
   {
     title: "Applications",

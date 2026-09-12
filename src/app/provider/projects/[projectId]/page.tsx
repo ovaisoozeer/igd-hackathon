@@ -80,13 +80,28 @@ export default async function ProviderProjectSubmissionsPage({
                         {submission.candidate.name}
                       </h3>
                     </div>
-                    {submission.rating != null && (
-                      <SubmissionRating rating={submission.rating} />
-                    )}
+                    <div className="flex flex-col items-end gap-1">
+                      {submission.rating != null && (
+                        <SubmissionRating rating={submission.rating} />
+                      )}
+                      {submission.shortlisted && (
+                        <p className="text-sm font-medium text-[var(--accent)]">
+                          Shortlisted
+                        </p>
+                      )}
+                    </div>
                   </div>
-                  <p className="mt-6 whitespace-pre-wrap leading-7 text-[var(--ink)]">
+                  <p className="mt-6 line-clamp-3 leading-7 text-[var(--ink)]">
                     {submission.content}
                   </p>
+                  <div className="mt-6">
+                    <Link
+                      href={`/provider/projects/${project.id}/submissions/${submission.id}`}
+                      className="btn-primary"
+                    >
+                      View details
+                    </Link>
+                  </div>
                 </li>
               ))}
             </ol>

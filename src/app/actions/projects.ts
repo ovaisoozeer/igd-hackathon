@@ -132,3 +132,39 @@ export async function createSubmission(
   revalidatePath("/provider/projects");
   revalidatePath(`/provider/projects/${project.id}`);
 }
+
+export async function shortlistSubmission(formData: FormData) {
+  const user = await getCurrentUser();
+
+  if (!user || user.role !== "PROVIDER") {
+    return;
+  }
+
+  const projectId = String(formData.get("projectId") ?? "").trim();
+  const submissionId = String(formData.get("submissionId") ?? "").trim();
+
+  if (!projectId || !submissionId) {
+    return;
+  }
+
+  const submission = await prisma.submission.findFirst({
+    where: {
+      id: submissionId,
+      projectId,
+    },
+    select: { id: true },
+  });
+
+  if (!submission) {
+    return;
+  }
+
+  await prisma.submission.update({
+    where: { id: submission.id },
+    data: { shortlisted: true },
+  });
+
+  revalidatePath(`/provider/projects/${projectId}`);
+  revalidatePath(`/provider/projects/${projectId}/submissions/${submission.id}`);
+  revalidatePath("/dashboard/opportunities");
+}
