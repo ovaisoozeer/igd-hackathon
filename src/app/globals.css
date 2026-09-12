@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #f3eee4;
+  --paper-dim: #d8d0c3;
+  --sand: #e7dfd1;
+  --ink: #1b1914;
+  --ink-soft: #2d2922;
+  --muted: #6b6458;
+  --line: #d4ccbe;
+  --accent: #c24b1d;
+  --background: var(--paper);
+  --foreground: var(--ink);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-serif: var(--font-instrument-serif);
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.field {
+  @apply w-full rounded-2xl border border-[var(--line)] bg-[var(--paper)] px-4 py-3 text-[var(--ink)] outline-none transition;
+}
+
+.field:focus {
+  border-color: var(--ink);
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center rounded-full bg-[var(--ink)] px-5 py-3 text-sm font-medium text-[var(--paper)] transition hover:bg-[var(--ink-soft)] disabled:cursor-not-allowed disabled:opacity-60;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center rounded-full border border-[var(--line)] px-5 py-3 text-sm font-medium text-[var(--ink)] transition hover:bg-[var(--sand)];
+}
+
+.role-card {
+  @apply cursor-pointer;
+}
+
+.role-card-surface {
+  @apply block rounded-2xl border border-[var(--line)] bg-[var(--paper)] p-4 transition;
+}
+
+.role-card .peer:checked + .role-card-surface {
+  border-color: var(--ink);
+  background: white;
+  box-shadow: 0 0 0 1px var(--ink);
+}
+
+.role-card .peer:focus-visible + .role-card-surface {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
