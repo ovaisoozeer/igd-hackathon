@@ -2,13 +2,14 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { SignupForm } from "@/app/ui/signup-form";
 import { SiteHeader } from "@/app/ui/site-header";
+import { dashboardPath } from "@/lib/routes";
 import { getCurrentUser } from "@/lib/session";
 
 export default async function SignupPage() {
   const user = await getCurrentUser();
 
   if (user) {
-    redirect("/dashboard");
+    redirect(dashboardPath(user.role));
   }
 
   return (

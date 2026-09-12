@@ -48,6 +48,7 @@ export async function getCurrentUser() {
       email: true,
       role: true,
       charityRegistrationNumber: true,
+      projectIndustry: true,
     },
   });
 }

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Role } from "@/lib/definitions";
 import { LogoutButton } from "@/app/ui/logout-button";
+import { dashboardPath } from "@/lib/routes";
 
 type SiteHeaderProps = {
   user?: {
@@ -40,7 +41,7 @@ export function SiteHeader({ user }: SiteHeaderProps) {
                 {user.name}
               </span>
               <Link
-                href="/dashboard"
+                href={dashboardPath(user.role)}
                 className="rounded-full px-3 py-1.5 text-[var(--ink)] transition hover:bg-[var(--sand)]"
               >
                 Dashboard

@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { IndustryPicker } from "@/app/ui/industry-picker";
 import { SiteHeader } from "@/app/ui/site-header";
 import { dashboardPath } from "@/lib/routes";
 import { getCurrentUser } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
 
-export default async function OpportunitiesPage() {
+export default async function CandidateProjectsDashboardsPage() {
   const user = await getCurrentUser();
 
   if (!user) {
@@ -25,11 +26,19 @@ export default async function OpportunitiesPage() {
           Back to dashboard
         </Link>
         <h1 className="mt-4 font-serif text-4xl tracking-tight sm:text-5xl">
-          Opportunities
+          Projects
         </h1>
-        <p className="mt-4 max-w-2xl text-lg leading-8 text-[var(--muted)]">
-          Open opportunities from providers will appear here.
-        </p>
+        <div className="mt-6">
+          {user.projectIndustry && (
+            <p className="mb-6 text-lg text-[var(--muted)]">
+              Current focus:{" "}
+              <span className="font-medium text-[var(--ink)]">
+                {user.projectIndustry}
+              </span>
+            </p>
+          )}
+          <IndustryPicker selected={user.projectIndustry} />
+        </div>
       </main>
     </div>
   );

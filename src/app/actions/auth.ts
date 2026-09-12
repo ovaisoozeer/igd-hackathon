@@ -9,6 +9,7 @@ import {
   type SignupFormState,
 } from "@/lib/definitions";
 import { prisma } from "@/lib/prisma";
+import { dashboardPath } from "@/lib/routes";
 import { createSession, deleteSession } from "@/lib/session";
 
 export async function signup(
@@ -54,7 +55,7 @@ export async function signup(
   });
 
   await createSession(user.id, user.role);
-  redirect("/dashboard");
+  redirect(dashboardPath(user.role));
 }
 
 export async function login(
@@ -86,7 +87,7 @@ export async function login(
   }
 
   await createSession(user.id, user.role);
-  redirect("/dashboard");
+  redirect(dashboardPath(user.role));
 }
 
 export async function logout() {

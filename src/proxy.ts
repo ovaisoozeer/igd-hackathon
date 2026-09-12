@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { dashboardPath } from "@/lib/routes";
 import { decrypt } from "@/lib/session-token";
 
-const protectedRoutes = ["/dashboard"];
+const protectedRoutes = ["/dashboard", "/candidate", "/provider"];
 const authRoutes = ["/login", "/signup"];
 
 export async function proxy(request: NextRequest) {
@@ -19,12 +20,22 @@ export async function proxy(request: NextRequest) {
   }
 
   if (isAuthRoute && isAuthenticated) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    const home =
+      session?.role === "PROVIDER" || session?.role === "CANDIDATE"
+        ? dashboardPath(session.role)
+        : "/candidate/dashboard";
+    return NextResponse.redirect(new URL(home, request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/login", "/signup"],
+  matcher: [
+    "/dashboard/:path*",
+    "/candidate/:path*",
+    "/provider/:path*",
+    "/login",
+    "/signup",
+  ],
 };

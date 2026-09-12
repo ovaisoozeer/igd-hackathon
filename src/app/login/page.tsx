@@ -2,13 +2,14 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { LoginForm } from "@/app/ui/login-form";
 import { SiteHeader } from "@/app/ui/site-header";
+import { dashboardPath } from "@/lib/routes";
 import { getCurrentUser } from "@/lib/session";
 
 export default async function LoginPage() {
   const user = await getCurrentUser();
 
   if (user) {
-    redirect("/dashboard");
+    redirect(dashboardPath(user.role));
   }
 
   return (
