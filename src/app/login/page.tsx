@@ -19,7 +19,7 @@ export default async function LoginPage() {
           Welcome back
         </p>
         <h1 className="mt-3 font-serif text-4xl tracking-tight">
-          Sign in to Harbor.
+          Sign in to AttrAct.
         </h1>
         <p className="mt-3 text-[var(--muted)]">
           Use the email and password from your account. Your role is already

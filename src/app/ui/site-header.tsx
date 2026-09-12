@@ -30,7 +30,7 @@ export function SiteHeader({ user }: SiteHeaderProps) {
               />
             </svg>
           </span>
-          <span className="font-serif text-xl tracking-tight">Harbor</span>
+          <span className="font-serif text-xl tracking-tight">AttrAct</span>
         </Link>
 
         <nav className="flex items-center gap-3 text-sm">

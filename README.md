@@ -1,4 +1,4 @@
-# Harbor
+# AttrAct
 
 A Next.js template with server-side rendering, email/password authentication, and a signup flow where users join as **candidates** or **providers**.
 

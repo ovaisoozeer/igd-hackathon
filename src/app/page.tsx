@@ -19,7 +19,7 @@ export default async function HomePage() {
               A quieter way to find work, or find people.
             </h1>
             <p className="mt-6 max-w-lg text-lg leading-8 text-[var(--muted)]">
-              Harbor is a starting template for matching two sides of a
+              AttrAct is a starting template for matching two sides of a
               marketplace. Sign up as a candidate looking for opportunities, or
               as a provider offering them.
             </p>
@@ -90,7 +90,7 @@ export default async function HomePage() {
 
       <footer className="bg-[var(--ink)] text-[var(--paper-dim)]">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 px-6 py-8 sm:flex-row sm:items-center sm:justify-between">
-          <p className="font-serif text-lg text-[var(--paper)]">Harbor</p>
+          <p className="font-serif text-lg text-[var(--paper)]">AttrAct</p>
           <p className="text-sm">
             Next.js template with server-side rendering and role-based signup.
           </p>
