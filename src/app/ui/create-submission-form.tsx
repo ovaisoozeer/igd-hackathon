@@ -31,6 +31,24 @@ export function CreateSubmissionForm({ projectId }: CreateSubmissionFormProps) {
         )}
       </div>
 
+      <div className="space-y-2">
+        <label htmlFor="artifactUrl" className="text-sm font-medium">
+          Link to artifacts
+        </label>
+        <div className="flex flex-col items-start gap-3">
+          <input
+            id="artifactUrl"
+            name="artifactUrl"
+            type="url"
+            placeholder="https://"
+            className="field"
+          />
+          <button type="button" className="btn-secondary">
+            Upload
+          </button>
+        </div>
+      </div>
+
       {state?.message && (
         <p className="text-sm text-[var(--accent)]">{state.message}</p>
       )}

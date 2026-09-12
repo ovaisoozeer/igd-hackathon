@@ -74,6 +74,26 @@ export default async function CandidateProjectPage({
               <p className="whitespace-pre-wrap leading-7 text-[var(--ink)]">
                 {submission.content}
               </p>
+              <div className="mt-6">
+                <Link
+                  href={`/candidate/projects/${project.id}/upload`}
+                  className="btn-primary"
+                >
+                  Review
+                </Link>
+              </div>
+              {submission.evaluation && (
+                <div className="mt-8 border-t border-[var(--line)] pt-6">
+                  <p className="text-sm font-medium text-[var(--accent)]">
+                    Saved evaluation
+                  </p>
+                  <div className="mt-3 space-y-4 leading-7 text-[var(--ink)]">
+                    {submission.evaluation.split("\n\n").map((paragraph) => (
+                      <p key={paragraph}>{paragraph}</p>
+                    ))}
+                  </div>
+                </div>
+              )}
             </article>
           ) : (
             <div className="mt-6 rounded-3xl border border-[var(--line)] bg-white p-6 sm:p-8">
