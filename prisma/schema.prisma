@@ -41,6 +41,7 @@ model Submission {
   id          String   @id @default(cuid())
   content     String
   evaluation  String?
+  rating      Int?
   candidateId String
   projectId   String
   candidate   User     @relation(fields: [candidateId], references: [id], onDelete: Cascade)

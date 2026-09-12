@@ -7,9 +7,10 @@ import {
   type CreateProjectState,
   type CreateSubmissionState,
 } from "@/lib/definitions";
+import { randomSubmissionRating } from "@/lib/evaluation";
 import { isIndustry } from "@/lib/industries";
 import { prisma } from "@/lib/prisma";
-import { getCurrentUser } from "@/lib/session";
+import { getCurrentUser, isCharityProvider } from "@/lib/session";
 
 export async function chooseProjectIndustry(formData: FormData) {
   const user = await getCurrentUser();
@@ -38,8 +39,8 @@ export async function createProject(
 ): Promise<CreateProjectState> {
   const user = await getCurrentUser();
 
-  if (!user || user.role !== "PROVIDER") {
-    return { message: "Only providers can upload projects." };
+  if (!user || !isCharityProvider(user)) {
+    return { message: "Only charities can upload projects." };
   }
 
   const validatedFields = CreateProjectSchema.safeParse({
@@ -70,6 +71,7 @@ export async function createProject(
   });
 
   revalidatePath("/provider/projects");
+  revalidatePath("/provider/my-projects");
 }
 
 export async function createSubmission(
@@ -119,6 +121,7 @@ export async function createSubmission(
   await prisma.submission.create({
     data: {
       content,
+      rating: randomSubmissionRating(),
       candidateId: user.id,
       projectId: project.id,
     },
@@ -126,4 +129,6 @@ export async function createSubmission(
 
   revalidatePath("/candidate/projects/dashboards");
   revalidatePath(`/candidate/projects/${project.id}`);
+  revalidatePath("/provider/projects");
+  revalidatePath(`/provider/projects/${project.id}`);
 }

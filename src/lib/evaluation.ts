@@ -1,3 +1,7 @@
+export function randomSubmissionRating() {
+  return Math.floor(Math.random() * 100) + 1;
+}
+
 export const SAMPLE_EVALUATION = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. The submission covers the main requirements with a clear structure, though a few details from the original brief are only partly addressed.
 
 Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. The proposed approach is practical, and the timeline is realistic, but success measures could be stated more explicitly.

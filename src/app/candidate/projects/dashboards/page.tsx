@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { IndustryPicker } from "@/app/ui/industry-picker";
 import { SiteHeader } from "@/app/ui/site-header";
+import { SubmissionRating } from "@/app/ui/submission-rating";
 import { prisma } from "@/lib/prisma";
 import { dashboardPath } from "@/lib/routes";
 import { getCurrentUser } from "@/lib/session";
@@ -26,7 +27,7 @@ export default async function CandidateProjectsDashboardsPage() {
           provider: { select: { name: true } },
           submissions: {
             where: { candidateId: user.id },
-            select: { id: true },
+            select: { id: true, rating: true },
           },
         },
         orderBy: { createdAt: "desc" },
@@ -68,16 +69,22 @@ export default async function CandidateProjectsDashboardsPage() {
             ) : (
               <ul className="mt-6 grid gap-4">
                 {projects.map((project) => {
-                  const hasSubmitted = project.submissions.length > 0;
+                  const submission = project.submissions[0];
+                  const hasSubmitted = Boolean(submission);
 
                   return (
                     <li
                       key={project.id}
                       className="rounded-3xl border border-[var(--line)] bg-white p-6"
                     >
-                      <p className="text-sm text-[var(--muted)]">
-                        From {project.provider.name}
-                      </p>
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <p className="text-sm text-[var(--muted)]">
+                          From {project.provider.name}
+                        </p>
+                        {submission?.rating != null && (
+                          <SubmissionRating rating={submission.rating} />
+                        )}
+                      </div>
                       <p className="mt-3 whitespace-pre-wrap leading-7 text-[var(--ink)]">
                         {project.brief}
                       </p>

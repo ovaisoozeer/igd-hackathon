@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { CreateSubmissionForm } from "@/app/ui/create-submission-form";
 import { SiteHeader } from "@/app/ui/site-header";
+import { SubmissionRating } from "@/app/ui/submission-rating";
 import { prisma } from "@/lib/prisma";
 import { dashboardPath } from "@/lib/routes";
 import { getCurrentUser } from "@/lib/session";
@@ -71,6 +72,11 @@ export default async function CandidateProjectPage({
           <h2 className="font-serif text-2xl">Your submission</h2>
           {submission ? (
             <article className="mt-6 rounded-3xl border border-[var(--line)] bg-white p-6 sm:p-8">
+              {submission.rating != null && (
+                <div className="mb-6">
+                  <SubmissionRating rating={submission.rating} />
+                </div>
+              )}
               <p className="whitespace-pre-wrap leading-7 text-[var(--ink)]">
                 {submission.content}
               </p>

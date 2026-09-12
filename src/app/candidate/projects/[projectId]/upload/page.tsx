@@ -57,6 +57,7 @@ export default async function CandidateSubmissionUploadPage({
         <div className="mt-10">
           <SubmissionReview
             evaluation={result.evaluation}
+            rating={result.rating}
             delay={result.isNew}
           />
         </div>

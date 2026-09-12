@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { CreateProjectForm } from "@/app/ui/create-project-form";
 import { SiteHeader } from "@/app/ui/site-header";
+import { ProviderProjectCard } from "@/app/ui/provider-project-card";
 import { prisma } from "@/lib/prisma";
 import { dashboardPath } from "@/lib/routes";
 import { getCurrentUser } from "@/lib/session";
@@ -20,7 +20,9 @@ export default async function ProviderProjectsPage() {
   }
 
   const projects = await prisma.project.findMany({
-    where: { providerId: user.id },
+    include: {
+      provider: { select: { name: true } },
+    },
     orderBy: { createdAt: "desc" },
   });
 
@@ -35,36 +37,18 @@ export default async function ProviderProjectsPage() {
           Projects
         </h1>
         <p className="mt-4 max-w-2xl text-lg leading-8 text-[var(--muted)]">
-          Upload a project with a short brief and the industry it belongs to.
+          Open a project to see the five highest-rated candidate submissions.
         </p>
 
-        <div className="mt-8 rounded-3xl border border-[var(--line)] bg-white p-6 sm:p-8">
-          <h2 className="font-serif text-2xl">New project</h2>
-          <div className="mt-6">
-            <CreateProjectForm />
-          </div>
-        </div>
-
         <section className="mt-10">
-          <h2 className="font-serif text-2xl">Your projects</h2>
           {projects.length === 0 ? (
             <p className="mt-4 text-[var(--muted)]">
-              No projects yet. Upload one to get started.
+              No projects yet. Charities can upload one from My Projects.
             </p>
           ) : (
             <ul className="mt-6 grid gap-4">
               {projects.map((project) => (
-                <li
-                  key={project.id}
-                  className="rounded-3xl border border-[var(--line)] bg-white p-6"
-                >
-                  <p className="text-sm font-medium text-[var(--accent)]">
-                    {project.industry}
-                  </p>
-                  <p className="mt-3 whitespace-pre-wrap leading-7 text-[var(--ink)]">
-                    {project.brief}
-                  </p>
-                </li>
+                <ProviderProjectCard key={project.id} project={project} />
               ))}
             </ul>
           )}

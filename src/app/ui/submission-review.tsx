@@ -1,14 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { SubmissionRating } from "@/app/ui/submission-rating";
 
 type SubmissionReviewProps = {
   evaluation: string;
+  rating: number;
   delay?: boolean;
 };
 
 export function SubmissionReview({
   evaluation,
+  rating,
   delay = false,
 }: SubmissionReviewProps) {
   const [ready, setReady] = useState(!delay);
@@ -37,7 +40,10 @@ export function SubmissionReview({
       <h2 className="mt-2 font-serif text-3xl tracking-tight">
         How well this met the brief
       </h2>
-      <div className="mt-6 space-y-4 leading-7 text-[var(--ink)]">
+      <div className="mt-6">
+        <SubmissionRating rating={rating} size="lg" />
+      </div>
+      <div className="mt-8 space-y-4 leading-7 text-[var(--ink)]">
         {evaluation.split("\n\n").map((paragraph) => (
           <p key={paragraph}>{paragraph}</p>
         ))}

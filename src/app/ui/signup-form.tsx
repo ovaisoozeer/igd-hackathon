@@ -124,8 +124,8 @@ export function SignupForm() {
             className="field"
           />
           <p className="text-sm text-[var(--muted)]">
-            Add this if you are registering as a charity. It unlocks My Projects
-            on your dashboard.
+            Add this if you are registering as a charity. Only charities can
+            create projects.
           </p>
           {state?.errors?.charityRegistrationNumber && (
             <p className="text-sm text-[var(--accent)]">
